@@ -18,7 +18,7 @@ public class HabitacionEntity extends BaseEntity{
     private Integer identificacion;
     private Integer cantidadPersonas;
     private Integer cantidadCamas;
-    private Integer cantidadBaños;
+    private Integer cantidadBanos;
 
     @ManyToOne
     private HotelEntity hotel;

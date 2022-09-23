@@ -18,6 +18,11 @@ public class HabitacionService {
 
     @Transactional
     public HabitacionEntity createHabitacion(HabitacionEntity habitacionEntity) throws IllegalOperationException {
+
+        if (habitacionEntity.getHotel() == null){
+            throw new IllegalOperationException("Se necesita estar asociado a un hotel");
+        }
+
         if (habitacionEntity.getIdentificacion() > habitacionEntity.getCantidadCamas()){
             throw new IllegalOperationException("Una habitación solo puede tener identificación <= camas");
         }

@@ -19,6 +19,8 @@ public class HotelService {
     @Transactional
     public HotelEntity createHoteles(HotelEntity hotelEntity) throws IllegalOperationException {
 
+
+
         if (!hotelRepository.findByNombre(hotelEntity.getNombre()).isEmpty()){
             throw new IllegalOperationException("Un hotel ya tienen ese nombre");
         }

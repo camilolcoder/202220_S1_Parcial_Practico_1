@@ -1,8 +1,7 @@
 package co.edu.uniandes.dse.parcialejemplo.services;
 
-
+import co.edu.uniandes.dse.parcialejemplo.entities.HabitacionEntity;
 import co.edu.uniandes.dse.parcialejemplo.entities.HotelEntity;
-import co.edu.uniandes.dse.parcialejemplo.exceptions.IllegalOperationException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,24 +17,27 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @Transactional
-@Import(HotelService.class)
+@Import({HotelService.class,HabitacionService.class})
 @Slf4j
 
+public class AsignacionServiceTest {
 
-public class HotelServiceTest {
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private HabitacionService habitacionService;
 
     @Autowired
     private TestEntityManager testEntityManager;
 
     private final PodamFactory factory = new PodamFactoryImpl();
     private final List<HotelEntity> hoteles = new ArrayList<>();
+
+    private final List<HabitacionEntity> habitaciones = new ArrayList<>();
 
     @BeforeEach
     void setUp(){
@@ -53,26 +55,5 @@ public class HotelServiceTest {
             testEntityManager.persist(hotelEntity);
             hoteles.add(hotelEntity);
         }
-    }
-
-    public void testCreateHotel() throws IllegalOperationException {
-        HotelEntity hotel = hotelService.createHoteles(factory.manufacturePojo(HotelEntity.class));
-
-        assertNotNull(hotel);
-
-        HotelEntity foundHotel = testEntityManager.find(HotelEntity.class, hotel.getId());
-
-        assertEquals(foundHotel.getDireccion(), hotel.getDireccion());
-        assertEquals(foundHotel.getHabitaciones(), hotel.getHabitaciones());
-        assertEquals(foundHotel.getNombre(), hotel.getNombre());
-        assertEquals(foundHotel.getId(), hotel.getId());
-
-        HotelEntity throwableHotel = factory.manufacturePojo(HotelEntity.class);
-
-        throwableHotel.setNombre(null);
-
-        IllegalOperationException nullNameException = assertThrows(IllegalOperationException.class,
-                () -> hotelService.createHoteles(throwableHotel));
-
     }
 }
